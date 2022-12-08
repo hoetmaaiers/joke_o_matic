@@ -5,7 +5,6 @@ defmodule JokeOMatic.Jokes do
   @name __MODULE__
 
   ### Client
-  def start_link()
 
   def start_link(opts \\ %{}) do
     GenServer.start_link(__MODULE__, opts, name: @name)

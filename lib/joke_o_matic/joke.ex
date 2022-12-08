@@ -1,6 +1,7 @@
 defmodule JokeOMatic.Joke do
   alias JokeOMatic.Joke
 
+  @derive {Jason.Encoder, only: [:id, :name]}
   defstruct [:id, :name]
 
   def random() do
