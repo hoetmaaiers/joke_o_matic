@@ -17,9 +17,10 @@ defmodule JokeOMatic.Application do
       # Start Finch
       {Finch, name: JokeOMatic.Finch},
       # Start the Endpoint (http/https)
-      JokeOMaticWeb.Endpoint
+      JokeOMaticWeb.Endpoint,
       # Start a worker by calling: JokeOMatic.Worker.start_link(arg)
       # {JokeOMatic.Worker, arg}
+      {JokeOMatic.Jokes, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

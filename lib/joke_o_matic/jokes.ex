@@ -1,27 +1,37 @@
 defmodule JokeOMatic.Jokes do
+  alias JokeOMatic.{Joke}
+
   use GenServer
+  @name __MODULE__
 
   ### Client
-  def populate(pid, count \\ 10) do
+  def start_link()
+
+  def start_link(opts \\ %{}) do
+    GenServer.start_link(__MODULE__, opts, name: @name)
+  end
+
+  def populate(count \\ 10) do
     Enum.each(1..count, fn _i ->
-      spawn(fn -> add(pid, Joke.random()) end)
+      spawn(fn -> add(Joke.random()) end)
     end)
   end
 
-  def list_all(pid) do
-    GenServer.call(pid, :list)
+  def list_all() do
+    GenServer.call(@name, :list)
   end
 
-  def add(pid, joke) do
-    GenServer.cast(pid, {:add, joke})
+  def add(joke) do
+    GenServer.cast(@name, {:add, joke})
   end
 
-  def flush(pid) do
-    GenServer.cast(pid, {:flush})
+  def flush() do
+    GenServer.cast(@name, {:flush})
   end
 
   ### Server(callbacks)
   def init(jokes) do
+    spawn_link(fn -> populate() end)
     {:ok, jokes}
   end
 
