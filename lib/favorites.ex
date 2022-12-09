@@ -1,11 +1,11 @@
 defmodule JokeOMatic.Favorites do
-  alias JokeOMatic.{FavoritesRegistry}
+  alias JokeOMatic.{Jokes, FavoritesRegistry}
 
   use GenServer
 
   defmodule State do
-    @enforce_keys ~w[joke_ids]a
-    defstruct joke_ids: []
+    @enforce_keys [:user_id, :joke_ids]
+    defstruct user_id: "", joke_ids: []
   end
 
   def via_tuple(id) do
@@ -20,9 +20,9 @@ defmodule JokeOMatic.Favorites do
   end
 
   ### Client
-  def start_link(id) do
-    state = %State{joke_ids: []}
-    GenServer.start_link(__MODULE__, state, name: via_tuple(id))
+  def start_link(user_id) do
+    state = %State{user_id: user_id, joke_ids: []}
+    GenServer.start_link(__MODULE__, state, name: via_tuple(user_id))
   end
 
   def list_all(id) do
@@ -31,11 +31,16 @@ defmodule JokeOMatic.Favorites do
   end
 
   def add(id, joke_id) do
-    GenServer.cast(via_tuple(id), {:add, joke_id})
+    # get the joke to confirm it exists
+
+    if Jokes.exists?(joke_id) do
+      GenServer.cast(via_tuple(id), {:add, joke_id})
+    end
   end
 
   ### Server ( callbacks )
   def init(state) do
+    IO.puts("Starting favorites server for user \"#{state.user_id}\"...")
     {:ok, state}
   end
 

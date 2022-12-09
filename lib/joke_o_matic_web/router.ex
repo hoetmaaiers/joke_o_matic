@@ -2,30 +2,31 @@ defmodule JokeOMaticWeb.Router do
   use JokeOMaticWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {JokeOMaticWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {JokeOMaticWeb.Layouts, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", JokeOMaticWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :home
+    get("/", PageController, :home)
   end
 
   # Other scopes may use custom stacks.
   scope "/api", JokeOMaticWeb do
-    pipe_through :api
+    pipe_through(:api)
 
-    get "/jokes", JokesController, :index
-    get "/users/:user_id/favorites", FavoritesController, :index
+    get("/jokes", JokesController, :index)
+    get("/users/:user_id/favorites", FavoritesController, :index)
+    post("/users/:user_id/favorites", FavoritesController, :create)
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
@@ -38,10 +39,10 @@ defmodule JokeOMaticWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: JokeOMaticWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: JokeOMaticWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

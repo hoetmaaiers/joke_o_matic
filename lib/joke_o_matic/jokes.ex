@@ -6,6 +6,7 @@ defmodule JokeOMatic.Jokes do
 
   ### Client
   def start_link(opts \\ %{}) do
+    IO.puts("Starting Jokes server...")
     GenServer.start_link(__MODULE__, opts, name: @name)
   end
 
@@ -13,6 +14,13 @@ defmodule JokeOMatic.Jokes do
     Enum.each(1..count, fn _i ->
       spawn(fn -> add(Joke.random()) end)
     end)
+  end
+
+  def exists?(id) do
+    case get_by_id(id) do
+      nil -> false
+      _ -> true
+    end
   end
 
   def get_by_id(id) do
@@ -42,8 +50,6 @@ defmodule JokeOMatic.Jokes do
   end
 
   def handle_call({:joke_by_id, id}, _from, state) do
-    IO.inspect(state)
-    IO.inspect(id)
     joke = Enum.find(state, fn joke -> joke.id == id end)
     {:reply, joke, state}
   end

@@ -21,10 +21,9 @@ defmodule JokeOMatic.Application do
       # Start a worker by calling: JokeOMatic.Worker.start_link(arg)
       # {JokeOMatic.Worker, arg}
       {JokeOMatic.Jokes, []},
-
       %{
         id: JokeOMatic.FavoritesRegistry,
-        start: {JokeOMatic.FavoritesRegistry, :start, []}
+        start: {JokeOMatic.FavoritesRegistry, :init, []}
       }
     ]
 

@@ -8,7 +8,7 @@ defmodule JokeOMatic.FavoritesRegistry do
     Registry.whereis_name({__MODULE__, key})
   end
 
-  def start() do
+  def init() do
     Registry.start_link(keys: :unique, name: __MODULE__)
   end
 end
