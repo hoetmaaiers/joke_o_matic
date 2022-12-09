@@ -25,6 +25,7 @@ defmodule JokeOMaticWeb.Router do
     pipe_through :api
 
     get "/jokes", JokesController, :index
+    get "/users/:user_id/favorites", FavoritesController, :index
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

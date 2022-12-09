@@ -20,7 +20,12 @@ defmodule JokeOMatic.Application do
       JokeOMaticWeb.Endpoint,
       # Start a worker by calling: JokeOMatic.Worker.start_link(arg)
       # {JokeOMatic.Worker, arg}
-      {JokeOMatic.Jokes, []}
+      {JokeOMatic.Jokes, []},
+
+      %{
+        id: JokeOMatic.FavoritesRegistry,
+        start: {JokeOMatic.FavoritesRegistry, :start, []}
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
